@@ -5,7 +5,6 @@ from api.controllers.todo_controller import bp as todo_bp
 from api.controllers.auth_controller import auth_bp as auth_bp
 from api.middleware import middleware
 from api.responses import success_response
-from infrastructure.databases import init_db
 from config import Config
 from flasgger import Swagger
 from config import SwaggerConfig

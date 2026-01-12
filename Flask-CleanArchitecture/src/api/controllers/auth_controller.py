@@ -1,15 +1,15 @@
 from flask import Blueprint, request, jsonify, current_app
 from datetime import datetime, timedelta
 from infrastructure.models.user_model import UserModel
-from infrastructure.databases.mssql import session
 from api.schemas.auth import RigisterUserRequestSchema,RigisterUserResponseSchema
 from services.auth_service import AuthService
 from infrastructure.repositories.auth_repository import AuthRepository
+from infrastructure.databases.supa import get_supabase_client
 from hashlib import sha256
 import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
-auth_service = AuthService(AuthRepository(session))
+auth_service = AuthService(AuthRepository(get_supabase_client))
 register_request = RigisterUserRequestSchema()
 register_response = RigisterUserResponseSchema()
 @auth_bp.route('/check_router', methods=['GET'])

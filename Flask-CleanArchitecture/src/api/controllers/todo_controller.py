@@ -3,10 +3,10 @@ from services.todo_service import TodoService
 from infrastructure.repositories.todo_repository import TodoRepository
 from api.schemas.todo import TodoRequestSchema, TodoResponseSchema
 from datetime import datetime
-from infrastructure.databases.mssql import session
+from infrastructure.databases.supa import get_supabase_client
 bp = Blueprint('todo', __name__, url_prefix='/todos')
 
-todo_service = TodoService(TodoRepository(session))
+todo_service = TodoService(TodoRepository(supabase=get_supabase_client()))
 
 request_schema = TodoRequestSchema()
 response_schema = TodoResponseSchema()

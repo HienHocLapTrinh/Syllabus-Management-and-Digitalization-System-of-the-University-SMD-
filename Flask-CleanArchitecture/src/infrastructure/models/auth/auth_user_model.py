@@ -1,6 +1,7 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
-from infrastructure.databases.supabase import get_supabase_client
-class AuthUserModel(get_supabase_client):
+from infrastructure.databases.base import Base
+from infrastructure.databases.supa import get_supabase_client
+class AuthUserModel(Base):
     __tablename__ = 'auth_users'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
