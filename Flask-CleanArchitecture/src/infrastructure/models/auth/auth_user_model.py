@@ -1,6 +1,5 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from infrastructure.databases.base import Base
-from infrastructure.databases.supa import get_supabase_client
 class AuthUserModel(Base):
     __tablename__ = 'auth_users'
 

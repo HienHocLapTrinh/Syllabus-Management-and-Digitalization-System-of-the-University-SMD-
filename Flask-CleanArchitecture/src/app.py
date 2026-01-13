@@ -3,6 +3,7 @@ from flask import Flask, jsonify
 from api.swagger import spec
 from api.controllers.todo_controller import bp as todo_bp
 from api.controllers.auth_controller import auth_bp as auth_bp
+from infrastructure.databases import init_db
 from api.middleware import middleware
 from api.responses import success_response
 from config import Config

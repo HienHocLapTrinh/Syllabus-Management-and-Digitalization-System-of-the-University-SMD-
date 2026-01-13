@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from config import Config
 from sqlalchemy import Column, Integer, String, DateTime
-from infrastructure.databases.supabase import get_supabase_client
+from infrastructure.databases.supa import get_supabase_client
 
 load_dotenv()
 
