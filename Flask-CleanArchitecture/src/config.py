@@ -9,7 +9,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'a_default_secret_key'
     DEBUG = os.environ.get('DEBUG', 'False').lower() in ['true', '1']
     TESTING = os.environ.get('TESTING', 'False').lower() in ['true', '1']
-    DATABASE_URI = os.environ.get('DATABASE_URI') or 'mssql+pymssql://sa:Aa%40123456@127.0.0.1:1433/DemoFlaskApi'
+    DATABASE_URI = os.environ.get('supabase_url') or 'https://jednbjdohmtdxegcgunq.supabase.co'
     CORS_HEADERS = 'Content-Type'
 
 class DevelopmentConfig(Config):
@@ -35,8 +35,8 @@ class ProductionConfig(Config):
 template = {
     "swagger": "2.0",
     "info": {
-        "title": "Todo API",
-        "description": "API for managing todos",
+        "title": "SMD API",
+        "description": "API for managing syllabus and digitalization system of the university",
         "version": "1.0.0"
     },
     "basePath": "/",

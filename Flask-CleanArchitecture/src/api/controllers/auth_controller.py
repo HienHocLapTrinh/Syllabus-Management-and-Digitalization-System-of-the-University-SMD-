@@ -70,6 +70,9 @@ def login():
     username=data['username'],
     password=data['password']
     password = generate_password_hash(password)
+
+    if not username or not password:
+        return jsonify({'error': 'Username or password has been entered incorrectly'}), 400
     user = auth_service.login(username, password)
     if not user:
         return jsonify({'error': 'Invalid credentials'}), 401
@@ -94,7 +97,7 @@ def register():
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RigisterUserRequest'
+              $ref: '#/components/schemas/RegisterUserRequest'
       tags:
         - Auth
       responses:
@@ -103,7 +106,7 @@ def register():
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RigisterUserResponse'
+                $ref: '#/components/schemas/RegisterUserResponse'
         400:
           description: Invalid input or user exists
           content:
@@ -123,13 +126,13 @@ def register():
     # Support JSON body and avoid KeyError by using .get()
     username = data.get('username') if isinstance(data, dict) else None
     password = data.get('password') if isinstance(data, dict) else None
-    passwordconfirm = data.get('passwordconfirm') if isinstance(data, dict) else None
+    password_confirm = data.get('passwordconfirm') if isinstance(data, dict) else None
     email = data.get('email') if isinstance(data, dict) else None
 
-    if not username or not password or not passwordconfirm or not email:
+    if not username or not password or not password_confirm or not email:
       return jsonify({'message': 'Missing required fields: username, password, passwordconfirm, email'}), 400
 
-    if password != passwordconfirm:
+    if password != password_confirm:
       return jsonify({'message': 'Passwords do not match'}), 400
 
     if auth_service.check_exist(username):
@@ -138,6 +141,7 @@ def register():
     # password_hashed = Str.encode()(password)
     password_hashed =generate_password_hash(password)
     new_user = auth_service.register(username, password_hashed, email)
+
     if not new_user:
       return jsonify({'message': 'Registration failed'}), 500 
     result = register_response.dump(new_user)
@@ -146,3 +150,25 @@ def register():
     #     return redirect(url_for('login'))
 
     # return render_template('register.html')
+
+@auth_bp.route('/logout', methods=['POST'])
+def logout():
+        """
+        Logout user
+        ---
+        post:
+          summary: Logout user
+          tags:
+            - Auth
+          responses:
+            200:
+              description: Successful logout
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+        """
+        return jsonify({'message': 'Logged out successfully'}), 200

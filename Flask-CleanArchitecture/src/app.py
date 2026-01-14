@@ -1,5 +1,7 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, redirect, url_for
 # from api.routes import register_routes
+from flask_admin import Admin
+from flask_admin import AdminIndexView
 from api.swagger import spec
 from api.controllers.todo_controller import bp as todo_bp
 from api.controllers.auth_controller import auth_bp as auth_bp
@@ -10,14 +12,33 @@ from config import Config
 from flasgger import Swagger
 from config import SwaggerConfig
 from flask_swagger_ui import get_swaggerui_blueprint
+from api.controllers.admin_controller import admin_bp
 
+class CustomAdminIndexView(AdminIndexView):
+    def is_accessible(self):
+        # Tạm thời cho phép tất cả (test)
+        # Sau này thêm logic auth JWT: check token từ header hoặc session
+        # Ví dụ: return current_user.is_authenticated (nếu dùng flask-login)
+        return True
 
+    def index(self):
+        # Khi không accessible → redirect về /admin/home
+        return redirect(url_for('smd_admin.admin_home'))  # 'smd_admin.admin_home' là endpoint của blueprint
+    
+    @property
+    def name(self):
+        return 'Dashboard'
+    
 def create_app():
     app = Flask(__name__)
     Swagger(app)
+    app.config.from_object(Config)
+    
     # Đăng ký blueprint trước
     app.register_blueprint(todo_bp)
     app.register_blueprint(auth_bp)
+    app.register_blueprint(admin_bp)
+
     # register_routes(app)
      # Thêm Swagger UI blueprint
     SWAGGER_URL = '/docs'
@@ -25,7 +46,7 @@ def create_app():
     swaggerui_blueprint = get_swaggerui_blueprint(
         SWAGGER_URL,
         API_URL,
-        config={'app_name': "Todo API"}
+        config={'app_name': "Syllabus Management and Digitalization System"}
     )
     app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
@@ -51,7 +72,10 @@ def create_app():
     @app.route("/swagger.json")
     def swagger_json():
         return jsonify(spec.to_dict())
-
+    
+    @app.route('/')
+    def home():
+        return "Welcome to SMD API. /docs for API docs, /admin for Admin Dashboard."
     return app
 # Run the application
 
