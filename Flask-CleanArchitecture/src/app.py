@@ -13,6 +13,8 @@ from flasgger import Swagger
 from config import SwaggerConfig
 from flask_swagger_ui import get_swaggerui_blueprint
 from api.controllers.admin_controller import admin_bp
+from api.controllers.student_controller import student_bp
+
 
 class CustomAdminIndexView(AdminIndexView):
     def is_accessible(self):
@@ -38,6 +40,8 @@ def create_app():
     app.register_blueprint(todo_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(student_bp)
+
 
     # register_routes(app)
      # Thêm Swagger UI blueprint
