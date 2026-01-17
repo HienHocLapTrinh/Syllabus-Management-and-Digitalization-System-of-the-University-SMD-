@@ -11,5 +11,5 @@ fastapi
 apispec
 apispec_webframeworks
 flask-swagger-ui
-supabase-python>=1.0.0
+supabase>=1.0.0
 flask-admin
